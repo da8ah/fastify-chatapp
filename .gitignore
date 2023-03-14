@@ -1,0 +1,7 @@
+.vscode/
+dist/
+node_modules/
+tools/
+.env
+globalConfig.json
+rome.json
