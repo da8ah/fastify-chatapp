@@ -19,7 +19,7 @@ export default class UserController {
 			res.status(400).send();
 
 		const result = await streamChat.queryUsers({ id });
-		if (result.users.length > 0) res.status(303).send();
+		if (result.users.length > 0) res.status(409).send();
 
 		await streamChat.upsertUser({ id, name, image });
 	}
