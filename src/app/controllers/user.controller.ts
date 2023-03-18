@@ -7,9 +7,9 @@ const streamChat = StreamChat.getInstance(
 	config.streamChatSecKey!,
 );
 
-export default class UserController {
-	private TOKEN_USER_ID_MAP = new Map<string, string>();
+const TOKEN_USER_ID_MAP = new Map<string, string>();
 
+export default class UserController {
 	public async signup(
 		req: FastifyRequest<{ Body: { id: string; name: string; image?: string } }>,
 		res: FastifyReply,
@@ -37,7 +37,7 @@ export default class UserController {
 		if (user == null) return res.status(401).send();
 
 		const token = streamChat.createToken(id);
-		this.TOKEN_USER_ID_MAP.set(token, user.id);
+		TOKEN_USER_ID_MAP.set(token, user.id);
 
 		return {
 			token,
@@ -52,10 +52,10 @@ export default class UserController {
 		const token = req.body.token;
 		if (token == null || token === "") return res.status(400).send();
 
-		const id = this.TOKEN_USER_ID_MAP.get(token);
+		const id = TOKEN_USER_ID_MAP.get(token);
 		if (id == null) return res.status(400).send();
 
 		await streamChat.revokeUserToken(id, new Date());
-		this.TOKEN_USER_ID_MAP.delete(token);
+		TOKEN_USER_ID_MAP.delete(token);
 	}
 }
